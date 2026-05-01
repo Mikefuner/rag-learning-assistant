@@ -1,5 +1,6 @@
 from typing import List
-from data_ingestion.ingestion_service import process_files
+from ingestion.ingestion_service import process_files
+from retrieval_generation.retrieval_generation_service import retrieve_user_query
 from fastapi import UploadFile
 
 class AssistantService:
@@ -7,5 +8,5 @@ class AssistantService:
     def upload_files(self, files: List[UploadFile]):
         process_files(files)
 
-    def ask_question(self, file: UploadFile):
-        return None
+    def user_query(self, query: str):
+        retrieve_user_query(query)
