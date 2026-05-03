@@ -1,18 +1,20 @@
 import fitz
+import re
+from dotenv import load_dotenv
 from fastapi import UploadFile
 from docx import Document
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_chroma import Chroma
 from io import BytesIO
 from typing import List
 
-splitter = CharacterTextSplitter(chunk_size=50, chunk_overlap=10, separator=" ")
-embedding_function = HuggingFaceEmbeddings(model="sentence-transformers/all-MiniLM-L6-v2")
-vector_database = Chroma(collection_name="study_material", embedding_function=embedding_function, persist_directory="/home/mikeonuf/PycharmProjects/rag-learning-assistant/ChromaDB")
+load_dotenv()
+db_path = "/home/mikeonuf/PycharmProjects/rag-learning-assistant/db/chroma_db"
 
-def get_vector_database() -> Chroma:
-    return vector_database
+splitter = CharacterTextSplitter(chunk_size=200, chunk_overlap=0, separator=" ")
+embedding_function = OpenAIEmbeddings(model="text-embedding-3-small")
+vector_database = Chroma(collection_name="study_material", embedding_function=embedding_function, persist_directory=db_path)
 
 def process_files(files: List[UploadFile]):
     for file in files:
@@ -26,7 +28,6 @@ def process_files(files: List[UploadFile]):
             ]
         )
 
-
 def extract_text(file: UploadFile) -> str:
     content: bytes = file.file.read()
 
@@ -37,11 +38,13 @@ def extract_text(file: UploadFile) -> str:
     return ""
 
 def extract_from_pdf(file_content: bytes) -> str:
-    doc = fitz.open(stream=file_content, filetype="pdf")
+    doc = fitz.open(stream=file_content, filetype="pdf").pages(start=1)
     file_text: str = " ".join([page.get_text() for page in doc])
-    return file_text.replace("\n", " ")
+    file_text = file_text.replace("\n", " ")
+    return re.sub(" +", " ", file_text)
 
 def extract_from_docx(file_content:bytes) -> str:
     doc = Document(BytesIO(file_content))
     file_text: str = " ".join([page.text for page in doc.paragraphs])
-    return file_text.replace("\n", " ")
+    file_text = file_text.replace("\n", " ")
+    return re.sub(" +", " ", file_text)
