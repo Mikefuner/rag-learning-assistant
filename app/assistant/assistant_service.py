@@ -1,15 +1,15 @@
 from typing import List
-from ingestion.ingestion_service import process_files, print_chunks, delete_collection
-from retrieval_generation.retrieval_generation_service import generate_response, retrieve_user_query
+from ingestion import ingestion_service
+from retrieval_generation import retrieval_generation_service
 from fastapi import UploadFile
 
 class AssistantService:
 
     def upload_files(self, files: List[UploadFile]):
-        process_files(files)
+        ingestion_service.process_files(files)
 
     def delete_collection(self, collection_name: str):
-        delete_collection(collection_name)
+        ingestion_service.delete_collection(collection_name)
 
     def user_query(self, query: str):
-        return generate_response(query)
+        return retrieval_generation_service.generate_response(query)
