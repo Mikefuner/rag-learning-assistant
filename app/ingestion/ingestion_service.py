@@ -28,6 +28,9 @@ def process_files(files: List[UploadFile]):
             ]
         )
 
+def delete_collection(collection_name: str):
+    vector_database.delete(collection_name=collection_name)
+
 def extract_text(file: UploadFile) -> str:
     content: bytes = file.file.read()
 

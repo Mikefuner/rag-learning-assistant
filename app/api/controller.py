@@ -15,3 +15,7 @@ async def upload_files(files: List[UploadFile]):
 @router.post("/user_query")
 async def user_query(request: QueryRequest):
     return service.user_query(request.query)
+
+@router.delete("delete_collection/{collection_name}")
+async def delete_collection(collection_name: str):
+    service.delete_collection(collection_name)
