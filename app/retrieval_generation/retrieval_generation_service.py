@@ -23,7 +23,7 @@ def generate_response(query: str):
     response: AIMessage = model.invoke(prompt)
     return response.content
 
-def retrieve_user_query(query: str) -> str:
+def retrieve_user_query(query: str) -> list[str]:
     documents: list[Document] = vector_database.similarity_search(query, k=10)
-    context: str = "\n".join([doc.page_content for doc in documents])
+    context: list[str] = [doc.page_content for doc in documents]
     return context

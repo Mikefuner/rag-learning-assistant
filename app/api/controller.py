@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 class QueryRequest(BaseModel):
     query: str
+
 router = APIRouter()
 service = AssistantService()
 

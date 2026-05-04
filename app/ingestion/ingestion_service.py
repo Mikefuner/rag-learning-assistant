@@ -12,7 +12,7 @@ from typing import List
 load_dotenv()
 db_path = "/home/mikeonuf/PycharmProjects/rag-learning-assistant/db/chroma_db"
 
-splitter = CharacterTextSplitter(chunk_size=200, chunk_overlap=0, separator=" ")
+splitter = CharacterTextSplitter(chunk_size=200)
 embedding_function = OpenAIEmbeddings(model="text-embedding-3-small")
 vector_database = Chroma(collection_name="study_material", embedding_function=embedding_function, persist_directory=db_path)
 
@@ -28,6 +28,12 @@ def process_files(files: List[UploadFile]):
             ]
         )
 
+def print_chunks(files: List[UploadFile]):
+    for file in files:
+        text: str = extract_text(file)
+        chunks: list[str] = splitter.split_text(text)
+        print(*chunks, sep="\n")
+
 def delete_collection(collection_name: str):
     vector_database.delete(collection_name=collection_name)
 
@@ -42,8 +48,7 @@ def extract_text(file: UploadFile) -> str:
 
 def extract_from_pdf(file_content: bytes) -> str:
     doc = fitz.open(stream=file_content, filetype="pdf").pages(start=1)
-    file_text: str = " ".join([page.get_text() for page in doc])
-    file_text = file_text.replace("\n", " ")
+    file_text: str = "\n\n".join([page.get_text().replace("\n", " ") for page in doc])
     return re.sub(" +", " ", file_text)
 
 def extract_from_docx(file_content:bytes) -> str:
