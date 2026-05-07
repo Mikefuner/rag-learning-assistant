@@ -12,7 +12,7 @@ from typing import List
 load_dotenv()
 db_path = "/home/mikeonuf/PycharmProjects/rag-learning-assistant/db/chroma_db"
 
-splitter = CharacterTextSplitter(chunk_size=900)
+splitter = CharacterTextSplitter()
 embedding_function = OpenAIEmbeddings(model="text-embedding-3-small")
 vector_database = Chroma(collection_name="study_material", embedding_function=embedding_function, persist_directory=db_path)
 
@@ -27,15 +27,6 @@ def process_files(files: List[UploadFile]):
                 for i in range(len(chunks))
             ]
         )
-
-def print_chunks(files: List[UploadFile]):
-    chunks_length = []
-
-    for file in files:
-        text: str = extract_text(file)
-        chunks: list[str] = splitter.split_text(text)
-        chunks_length.append(len(max(chunks, key=len)))
-    print(max(chunks_length))
 
 def delete_collection(collection_name: str):
     vector_database.delete(collection_name=collection_name)

@@ -25,5 +25,5 @@ def generate_response(query: str):
 
 def retrieve_user_query(query: str):
     documents: list[Document] = vector_database.similarity_search(query, k=10)
-    context: str = "\n".join([doc.page_content for doc in documents])
+    context: str = '\n'.join([doc.page_content for doc in documents])
     return context
