@@ -9,7 +9,7 @@ class AssistantService:
         ingestion_service.process_files(files)
 
     def delete_collection(self, collection_name: str):
-        ingestion_service.delete_collection(collection_name)
+        return None
 
     def user_query(self, query: str):
         return retrieval_generation_service.generate_response(query)
