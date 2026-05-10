@@ -12,8 +12,8 @@ vector_database = Chroma(collection_name="study_material", embedding_function=em
 
 def upload_text_chunks(chunks: list[str], file: UploadFile):
     vector_database.add_texts(texts=chunks, metadatas=[{"source": file.filename, "chunk": i}
-        for i in range(len(chunks))]
-    )
+        for i in range(len(chunks))
+    ])
 
 def retrieve_text_chunks(query: str) -> list[str]:
     docs: list[Document] = vector_database.similarity_search(query, k=10)
