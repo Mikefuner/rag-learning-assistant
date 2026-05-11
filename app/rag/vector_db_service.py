@@ -1,3 +1,4 @@
+import os
 from dotenv import load_dotenv
 from fastapi import UploadFile
 from langchain_chroma import Chroma
@@ -6,7 +7,7 @@ from langchain_openai import OpenAIEmbeddings
 
 load_dotenv()
 
-db_path = "/home/mikeonuf/PycharmProjects/rag-learning-assistant/db/chroma_db"
+db_path = os.getenv("DB_URL")
 embedding_function = OpenAIEmbeddings(model="text-embedding-3-small")
 vector_database = Chroma(collection_name="study_material", embedding_function=embedding_function, persist_directory=db_path)
 

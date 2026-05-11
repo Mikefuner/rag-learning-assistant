@@ -1,6 +1,5 @@
 from typing import List
-from ingestion import ingestion_service
-from retrieval_generation import retrieval_generation_service
+from rag import ingestion_service, generation_service
 from fastapi import UploadFile
 
 class AssistantService:
@@ -12,4 +11,4 @@ class AssistantService:
         return None
 
     def user_query(self, query: str):
-        return retrieval_generation_service.generate_response(query)
+        return generation_service.generate_response(query)

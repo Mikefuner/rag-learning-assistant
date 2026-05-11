@@ -1,5 +1,5 @@
 from langchain_core.messages import AIMessage
-from vector_database import vector_db_service
+import vector_db_service
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 

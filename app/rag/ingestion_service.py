@@ -2,7 +2,7 @@ import fitz
 import re
 from fastapi import UploadFile
 from langchain_text_splitters import CharacterTextSplitter
-from vector_database import vector_db_service
+import vector_db_service
 from typing import List
 
 splitter = CharacterTextSplitter()
