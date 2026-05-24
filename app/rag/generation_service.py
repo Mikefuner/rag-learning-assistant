@@ -1,7 +1,7 @@
 from typing import Any
 
 from langchain_core.messages import AIMessage
-import vector_db_service
+from . import vector_db_service
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 
@@ -47,8 +47,7 @@ def get_conversation(chat_history: list[dict[str, str]]) -> str:
 
     for dialog in chat_history:
         paragraphs.append(
-            f"User: {dialog.get('user', '')}\n"
-            f"Assistant: {dialog.get('assistant', '')}"
+            f"{dialog.get('role')}: {dialog.get('content')}"
         )
 
-    return "\n\n".join(paragraphs)
+    return "\n".join(paragraphs)

@@ -1,8 +1,7 @@
-import fitz
-import re
+import fitz, re
 from fastapi import UploadFile
 from langchain_text_splitters import CharacterTextSplitter
-import vector_db_service
+from . import vector_db_service
 from typing import List
 
 splitter = CharacterTextSplitter()
