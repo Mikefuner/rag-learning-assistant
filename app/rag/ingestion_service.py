@@ -4,19 +4,21 @@ from fastapi import UploadFile
 from docx import Document as Docs
 from video_converter import video_converter_service
 from langchain_core.documents import Document
-from langchain_text_splitters import CharacterTextSplitter
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from . import vector_db_service
 from typing import List
 
-char_splitter = CharacterTextSplitter()
-recs_splitter = RecursiveCharacterTextSplitter()
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,
+    chunk_overlap=200,
+    length_function=len,
+    separators=["\n\n", "\n", ".", " ", ""]
+)
 
 def process_files(files: List[UploadFile]):
     for file in files:
         chunks: list[str] = get_chunks(file)
-        print(chunks)
-        # vector_db_service.upload_text_chunks(chunks)
+        vector_db_service.upload_text_chunks(chunks)
 
 
 def get_chunks(file: UploadFile) -> list[str]:
@@ -36,8 +38,8 @@ def split_docx_document(file_content: bytes) -> list[str]:
     document = Docs(BytesIO(file_content))
     text = "\n\n".join(paragraph.text.strip() for paragraph in document.paragraphs if paragraph.text.strip())
     if not text: return []
-    return [doc.page_content for doc in char_splitter.split_documents([Document(page_content=text)])]
+    return [doc.page_content for doc in splitter.split_documents([Document(page_content=text)])]
 
 def split_video_text(file: UploadFile) -> list[str]:
     video_text: str = video_converter_service.from_video_to_text(file)
-    return recs_splitter.split_text(video_text)
+    return splitter.split_text(video_text)

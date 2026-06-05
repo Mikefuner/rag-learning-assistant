@@ -2,16 +2,16 @@ from typing import Any
 
 from langchain_core.messages import AIMessage
 from . import vector_db_service
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from dotenv import load_dotenv
 
 load_dotenv()
-model = ChatOpenAI(model="gpt-4o")
+model = ChatAnthropic(model_name="claude-sonnet-4-6")
 
 def generate_response(basic_query: str, chat_history: list[dict[str, str]]) -> str | list[str | Any]:
     conversation: str = get_conversation(chat_history)
     contextualized_query: str = contextualize_query(basic_query, conversation)
-    context: list[str] = vector_db_service.retrieve_text_chunks(contextualized_query)
+    context: list[str] = vector_db_service.retrieve_chunks(contextualized_query)
 
     prompt: str = f'''
         Context : {"\n".join(context)}
