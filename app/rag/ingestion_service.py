@@ -4,8 +4,7 @@ from xml.etree import ElementTree
 import fitz, re
 from fastapi import UploadFile
 from docx import Document as Docs
-from video_converter import video_converter_service
-from langchain_core.documents import Document
+from video_and_audio import video_converter_service
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from . import vector_db_service
 from typing import List
