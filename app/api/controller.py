@@ -25,7 +25,3 @@ async def query_request(request: QueryRequest):
 @router.post("/audio_request")
 async def audio_request(request: AudioRequest):
     return QueryResponse(response=assistant_service.audio_request(request.audio_file))
-
-@router.delete("delete_collection/{collection_name}")
-async def delete_collection(collection_name: str):
-    assistant_service.delete_collection(collection_name)
