@@ -7,9 +7,6 @@ from fastapi import UploadFile
 def upload_files(files: List[UploadFile]):
     ingestion_service.process_files(files)
 
-def delete_collection(collection_name: str):
-    return None
-
 def query_request(query: str):
     chat_messages = chat_memory_service.get_messages()
     chat_memory_service.add_message("user", query)

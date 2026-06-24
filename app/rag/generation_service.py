@@ -14,6 +14,10 @@ def generate_response(basic_query: str, chat_history: list[dict[str, str]]) -> s
     context: list[str] = vector_db_service.retrieve_chunks(contextualized_query)
 
     prompt: str = f'''
+        Role: You are a teacher, you should explain the asked
+        theme in the most clear and available way to help me to understand them.
+        Create a unique linked explanation in base of the context and chat history.
+    
         Context : {"\n".join(context)}
         
         Chat history : {conversation}
