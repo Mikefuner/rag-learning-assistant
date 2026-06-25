@@ -18,7 +18,8 @@ splitter = RecursiveCharacterTextSplitter(
 
 def process_files(files: List[UploadFile]):
     for file in files:
-        vector_db_service.upload_text_chunks(get_chunks(file))
+        chunks: list[str] = get_chunks(file)
+        vector_db_service.upload_text_chunks(chunks, file)
 
 def get_chunks(file: UploadFile) -> list[str]:
     content: bytes = file.file.read()

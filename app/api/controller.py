@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile
 from assistant import assistant_service
 from typing import List
 from pydantic import BaseModel
@@ -8,10 +8,6 @@ class QueryRequest(BaseModel):
 
 class QueryResponse(BaseModel):
     response: str
-
-class AudioRequest(BaseModel):
-    audio_file: UploadFile
-
 router = APIRouter()
 
 @router.post("/upload_files")
@@ -23,5 +19,5 @@ async def query_request(request: QueryRequest):
     return QueryResponse(response=assistant_service.query_request(request.query))
 
 @router.post("/audio_request")
-async def audio_request(request: AudioRequest):
-    return QueryResponse(response=assistant_service.audio_request(request.audio_file))
+async def audio_request(audio_file: UploadFile):
+    return QueryResponse(response=assistant_service.audio_request(audio_file))

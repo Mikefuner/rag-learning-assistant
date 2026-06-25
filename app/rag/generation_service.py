@@ -2,11 +2,11 @@ from typing import Any
 
 from langchain_core.messages import AIMessage
 from . import vector_db_service
-from langchain_anthropic import ChatAnthropic
+from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
-model = ChatAnthropic(model_name="claude-sonnet-4-6")
+model = ChatOpenAI(model="gpt-4o")
 
 def generate_response(basic_query: str, chat_history: list[dict[str, str]]) -> str | list[str | Any]:
     conversation: str = get_conversation(chat_history)
