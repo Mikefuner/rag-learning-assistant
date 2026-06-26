@@ -1,5 +1,5 @@
 from typing import List
-from rag import ingestion_service, generation_service
+from rag import ingestion_service, generation_service, vector_db_service
 from chat_memory import chat_memory_service
 from video_and_audio import audio_converter_service
 from fastapi import UploadFile
@@ -17,3 +17,6 @@ def query_request(query: str):
 def audio_request(audio_file: UploadFile):
     text_query: str = audio_converter_service.from_audio_to_text(audio_file)
     return query_request(text_query)
+
+def delete_all_info():
+    vector_db_service.delete_database()
