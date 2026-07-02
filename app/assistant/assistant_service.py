@@ -1,16 +1,19 @@
 from typing import List
 from rag import ingestion_service, generation_service, vector_db_service
 from chat_memory import chat_memory_service
+from rag.vector_db_service import VectorDatabase
 from video_and_audio import audio_converter_service
 from fastapi import UploadFile
 
+vector_db = VectorDatabase()
+
 def upload_files(files: List[UploadFile]):
-    ingestion_service.process_files(files)
+    ingestion_service.process_files(files, vector_db)
 
 def query_request(query: str):
     chat_messages = chat_memory_service.get_messages()
     chat_memory_service.add_message("user", query)
-    response = generation_service.generate_response(query, chat_messages)
+    response = generation_service.generate_response(query, chat_messages, vector_db)
     chat_memory_service.add_message("assistant", response)
     return response
 
@@ -19,4 +22,4 @@ def audio_request(audio_file: UploadFile):
     return query_request(text_query)
 
 def delete_all_info():
-    vector_db_service.delete_database()
+    vector_db.reset_database()

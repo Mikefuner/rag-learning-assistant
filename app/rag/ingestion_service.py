@@ -6,7 +6,7 @@ from fastapi import UploadFile
 from docx import Document as Docs
 from video_and_audio import video_converter_service
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from . import vector_db_service
+from .vector_db_service import VectorDatabase
 from typing import List
 
 splitter = RecursiveCharacterTextSplitter(
@@ -16,10 +16,10 @@ splitter = RecursiveCharacterTextSplitter(
     separators=["\n\n", "\n", ".", " ", ""]
 )
 
-def process_files(files: List[UploadFile]):
+def process_files(files: List[UploadFile], vector_db: VectorDatabase):
     for file in files:
         chunks: list[str] = get_chunks(file)
-        vector_db_service.upload_text_chunks(chunks, file)
+        vector_db.upload_text_chunks(chunks, file)
 
 def get_chunks(file: UploadFile) -> list[str]:
     content: bytes = file.file.read()

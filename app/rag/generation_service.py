@@ -1,17 +1,17 @@
 from typing import Any
-
 from langchain_core.messages import AIMessage
-from . import vector_db_service
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
+from .vector_db_service import VectorDatabase
 
 load_dotenv()
 model = ChatOpenAI(model="gpt-4o")
 
-def generate_response(basic_query: str, chat_history: list[dict[str, str]]) -> str | list[str | Any]:
+def generate_response(basic_query: str, chat_history: list[dict[str, str]], vector_db: VectorDatabase) -> str | list[str | Any]:
     conversation: str = get_conversation(chat_history)
     contextualized_query: str = contextualize_query(basic_query, conversation)
-    context: list[str] = vector_db_service.retrieve_chunks(contextualized_query)
+    context: list[str] = vector_db.retrieve_chunks(contextualized_query)
+    print(context)
 
     prompt: str = f'''
         Role: You are a teacher, you should explain the asked
