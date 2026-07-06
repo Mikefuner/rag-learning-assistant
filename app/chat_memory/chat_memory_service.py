@@ -1,7 +1,12 @@
 import json
+import os
 import redis
+from dotenv import load_dotenv
 
-memory = redis.Redis(host='localhost', port=6379, decode_responses=True)
+load_dotenv()
+
+redis_port = int(os.getenv("REDIS_PORT", "6379"))
+memory = redis.Redis(host='localhost', port=redis_port, decode_responses=True)
 
 key = "chat:memory"
 

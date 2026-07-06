@@ -1,4 +1,3 @@
-import shutil
 from dotenv import load_dotenv
 from pathlib import Path
 from fastapi import UploadFile
@@ -8,17 +7,17 @@ from langchain_openai import OpenAIEmbeddings
 
 load_dotenv()
 
-class VectorDatabase:
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+db_path = PROJECT_ROOT / "db" / "chroma_db"
+embedding_function = OpenAIEmbeddings(model="text-embedding-3-small")
 
-    PROJECT_ROOT = Path(__file__).resolve().parents[2]
-    db_path = PROJECT_ROOT / "db" / "chroma_db"
-    embedding_function = OpenAIEmbeddings(model="text-embedding-3-small")
+class VectorDatabase:
 
     def __init__(self):
         self.vector_database = Chroma(
             collection_name="study_material",
-            embedding_function=VectorDatabase.embedding_function,
-            persist_directory=str(VectorDatabase.db_path)
+            embedding_function=embedding_function,
+            persist_directory=str(db_path)
         )
 
     def upload_text_chunks(self, chunks: list[str], file: UploadFile):
@@ -39,6 +38,6 @@ class VectorDatabase:
         self.vector_database.delete_collection()
         self.vector_database = Chroma(
             collection_name="study_material",
-            embedding_function=VectorDatabase.embedding_function,
-            persist_directory=str(VectorDatabase.db_path)
+            embedding_function=embedding_function,
+            persist_directory=str(db_path)
         )
