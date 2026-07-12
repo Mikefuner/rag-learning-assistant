@@ -11,7 +11,6 @@ def generate_response(basic_query: str, chat_history: list[dict[str, str]], vect
     conversation: str = get_conversation(chat_history)
     contextualized_query: str = contextualize_query(basic_query, conversation)
     context: list[str] = vector_db.retrieve_chunks(contextualized_query)
-    print(context)
 
     prompt: str = f'''
         Role: You are a teacher, you should explain the asked

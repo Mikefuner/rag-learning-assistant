@@ -5,8 +5,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+redis_host = os.getenv("REDIS_HOST", "0.0.0.0")
 redis_port = int(os.getenv("REDIS_PORT", "6379"))
-memory = redis.Redis(host='localhost', port=redis_port, decode_responses=True)
+
+memory = redis.Redis(host=redis_host, port=redis_port, decode_responses=True)
 
 key = "chat:memory"
 
