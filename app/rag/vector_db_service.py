@@ -1,4 +1,3 @@
-import os, shutil
 from dotenv import load_dotenv
 from pathlib import Path
 from fastapi import UploadFile
@@ -36,8 +35,7 @@ class VectorDatabase:
         return [doc.page_content for doc in docs]
 
     def reset_database(self):
-        if os.path.exists(db_path):
-            shutil.rmtree(db_path)
+        self.vector_database.delete_collection()
         self.vector_database = Chroma(
             collection_name="study_material",
             embedding_function=embedding_function,
