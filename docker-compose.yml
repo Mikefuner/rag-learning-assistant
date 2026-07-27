@@ -11,8 +11,6 @@ services:
       - redis
     networks:
       - app-network
-    volumes:
-      - assistant-volume:/data
 
   redis:
     image: redis:alpine
@@ -25,7 +23,6 @@ services:
       - redis-volume:/data
 
 volumes:
-  assistant-volume:
   redis-volume:
 
 networks:
