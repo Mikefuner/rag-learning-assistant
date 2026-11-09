@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-redis_host = os.getenv("REDIS_HOST", "0.0.0.0")
-redis_port = int(os.getenv("REDIS_PORT", "6379"))
+redis_host = os.getenv("REDIS_HOST")
+redis_port = int(os.getenv("REDIS_PORT"))
 
 memory = redis.Redis(host=redis_host, port=redis_port, decode_responses=True)
 
