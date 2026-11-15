@@ -10,7 +10,7 @@ class QueryRequest(BaseModel):
 class QueryResponse(BaseModel):
     response: str
 
-router = APIRouter(dependencies=[Depends(verify_access)])
+router = APIRouter(prefix="/learn_assistant" ,dependencies=[Depends(verify_access)])
 
 @router.post("/upload_files")
 async def upload_files(files: List[UploadFile]):
