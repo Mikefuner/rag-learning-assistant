@@ -8,6 +8,7 @@ load_dotenv()
 
 server_host = os.getenv("SERVER_HOST")
 server_port = int(os.getenv("EXPOSE_PORT"))
+
 app = FastAPI()
 app.include_router(router)
 
